@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Get Text Input Field Value in JavaScript</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <input type="text" placeholder="Type something..." id="mya">
+    <input type="text" placeholder="Type something..." id="myb">
+
+    <button type="button" onclick="getInputValue();">Get Value</button>
+    
+    <script>
+        function getInputValue(){
+            // Selecting the input element and get its value 
+            var aval = document.getElementById("mya").value;
+            var bval = document.getElementById("myb").value;
+            $.ajax({
+                    url: 'http://localhost:56638/api/values',
+                    type: 'post',
+                    data:{Avalue:aval,Bvalue:bval},
+                    crossDomain: true,
+                    traditional:true,
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
+        }
+    </script>
+</body>
+</html>

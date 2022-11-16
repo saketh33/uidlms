@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- HTML-->
+    <form id="contact-form">
+      <label for="name">Comport</label>
+      <input type="number" id="quantity" name="Comport" min="1" max="5">
+      <label><input type="checkbox" value="1" name="programming"> inst</label>
+      <label><input type="checkbox" value="2" name="programming"> billing</label>
+      <label><input type="checkbox" value="3" name="programming"> load</label>
+      <label><input type="checkbox" value="4" name="programming"> daily</label>
+      <select aria-label=".form-select-sm example" name="comtype">
+        <option value="DIRECT">DIRECT</option>
+        <option value="TCPIP">TCPIP </option>
+        <option value="RS485">RS485</option>
+        <option value="SERIAL">SERIAL</option>
+      </select>
+      <button type="submit">Send</button>
+    </form>
+
+    <!-- JavaScript -->
+    <script>
+      function convertFormToJSON(form) {
+        const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
+        const json = {};
+        $.each(array, function () {
+          json[this.name] = this.value || "";
+        });
+        return json;
+      }
+
+      $("#contact-form").on("submit", function (e) {
+        e.preventDefault();
+        const form = $(e.target);
+        const json = convertFormToJSON(form);
+        var test = new Array();
+            $("input[name='programming']:checked").each(function() {
+                test.push($(this).val());
+            });
+        json['profile']=test;
+        delete json.programming;
+        console.log(json);
+        $.ajax({
+                    url: 'http://localhost:56638/api/values',
+                    type: 'post',
+                    data:json,
+                    crossDomain: true,
+                    traditional:true,
+                    success: function(data){
+                        console.log(data);
+                    }
+                });
+      });
+    </script>
+  </body>
+</html>
